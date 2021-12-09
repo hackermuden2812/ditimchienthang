@@ -30,6 +30,7 @@ class DoodleJump:
         self.gravity = 0
         self.xmovement = 0
     
+    # Update nhân vật
     def updatePlayer(self):
         if not self.jump:        
             self.playery += self.gravity
@@ -69,7 +70,8 @@ class DoodleJump:
                 self.screen.blit(self.playerLeft_1, (self.playerx, self.playery - self.cameray))
             else:
                 self.screen.blit(self.playerLeft, (self.playerx, self.playery - self.cameray))
-
+    
+    #Update ván
     def updatePlatforms(self):
         for p in self.platforms:
             rect = pygame.Rect(p[0], p[1], self.green.get_width() - 10, self.green.get_height())
