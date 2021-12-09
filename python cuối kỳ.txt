@@ -1,0 +1,11 @@
+1. Tìm hiểu về các Syntax ở trong đoạn code đã cho
+2. Thêm các tính năng vào game, người nào có tính năng gì thì tự code
+3. Code lại mỗi phần nếu có thể sửa được
+4. Tìm asset
+
+NOTE:
+1. Con nhân vật hiện tại chưa chết được, cần làm cho nó chết
+2. Hitbox nhân vật còn hơi ảo. Cần fix
+3. Cần thêm cái sàn cho nhân vật đứng đoạn đầu, và thêm dòng "Nhấn phím bất kỳ để
+bắt đầu trò chơi"
+https://www.youtube.com/watch?v=Ak_BYhV_pI0
