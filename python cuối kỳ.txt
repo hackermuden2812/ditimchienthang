@@ -4,8 +4,10 @@
 4. Tìm asset
 
 NOTE:
-1. Con nhân vật hiện tại chưa chết được, cần làm cho nó chết
-2. Hitbox nhân vật còn hơi ảo. Cần fix
-3. Cần thêm cái sàn cho nhân vật đứng đoạn đầu, và thêm dòng "Nhấn phím bất kỳ để
+1. Cần thêm cái sàn cho nhân vật đứng đoạn đầu, và thêm dòng "Nhấn phím bất kỳ để
 bắt đầu trò chơi"
-https://www.youtube.com/watch?v=Ak_BYhV_pI0
+2. Thêm màn hình GameOver và HighScore vào lúc nhân vật chết
+3. Tạo thêm chướng ngại vật. : https://github.com/thefrolov/Doodle-Jump có thể tham khảo
+ở đây
+4. Thay các lò xo bằng boost.
+5. Đổi asset nhân vật, tấm ván, background.
