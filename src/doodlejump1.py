@@ -153,10 +153,7 @@ class DoodleJump:
     def run(self):
         clock = pygame.time.Clock()
         self.generatePlatforms()
-        pygame.display.set_caption("Đi tìm chiến thắng!!")
-        pygame.mixer.init()
-        pygame.mixer.music.load('Code3/assets/Buoc Qua Nhau - Vu.mp3')
-        pygame.mixer.music.play(-1)
+        pygame.display.set_caption("Đi tìm chiến thắng!!")        
         while True:
             self.screen.fill((255,255,255))
             clock.tick(60)
