@@ -1,13 +1,11 @@
-1. Tìm hiểu về các Syntax ở trong đoạn code đã cho
-2. Thêm các tính năng vào game, người nào có tính năng gì thì tự code
-3. Code lại mỗi phần nếu có thể sửa được
-4. Tìm asset
+Tình hình là Project cũ bể rồi nên anh em mình chuyển qua làm Project về game
+giống Gunny.
 
-NOTE:
-1. Cần thêm cái sàn cho nhân vật đứng đoạn đầu, và thêm dòng "Nhấn phím bất kỳ để
-bắt đầu trò chơi"
-2. Thêm màn hình GameOver và HighScore vào lúc nhân vật chết
-3. Tạo thêm chướng ngại vật. : https://github.com/thefrolov/Doodle-Jump có thể tham khảo
-ở đây
-4. Thay các lò xo bằng boost.
-5. Đổi asset nhân vật, tấm ván, background.
+Vậy nên sẽ có những thứ mà mình cần phải làm bây giờ :
+
+1. Tạo Scenes để 2 nhân vật bắn nhau.
+2. Tìm hiểu về góc bắn và lực bắn qua source code của Gunbound trên Github
+3. Tìm kiếm Asset và cách làm nhân vật chuyển động.
+4. Tạo ra các Power Up
+5. Làm những công đoạn cuối cùng như là Game Over hay là
+lựa chọn nhân vật ở đoạn đầu, nếu được thì sẽ có chọn skin ( 1 tính năng khá là thú vị )

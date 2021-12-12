@@ -7,19 +7,19 @@ class DoodleJump:
     def __init__(self):
         #Set độ dài độ rộng màn hình
         self.screen = pygame.display.set_mode((800, 600))
-        self.green = pygame.image.load("Code3/assets/green.png").convert_alpha()
+        self.green = pygame.image.load('src/assets/green.png').convert_alpha()
         pygame.font.init()
         self.score = 0
         self.font = pygame.font.SysFont("Times New Roman", 25)
-        self.blue = pygame.image.load("Code3/assets/blue.png").convert_alpha()
-        self.red = pygame.image.load("Code3/assets/red.png").convert_alpha()
-        self.red_1 = pygame.image.load("Code3/assets/red_1.png").convert_alpha()
-        self.playerRight = pygame.image.load("Code3/assets/right.png").convert_alpha()
-        self.playerRight_1 = pygame.image.load("Code3/assets/right_1.png").convert_alpha()
-        self.playerLeft = pygame.image.load("Code3/assets/left.png").convert_alpha()
-        self.playerLeft_1 = pygame.image.load("Code3/assets/left_1.png").convert_alpha()
-        self.spring = pygame.image.load("Code3/assets/spring.png").convert_alpha()
-        self.spring_1 = pygame.image.load("Code3/assets/spring_1.png").convert_alpha()
+        self.blue = pygame.image.load("src/assets/blue.png").convert_alpha()
+        self.red = pygame.image.load("src/assets/red.png").convert_alpha()
+        self.red_1 = pygame.image.load("src/assets/red_1.png").convert_alpha()
+        self.playerRight = pygame.image.load("src/assets/right.png").convert_alpha()
+        self.playerRight_1 = pygame.image.load("src/assets/right_1.png").convert_alpha()
+        self.playerLeft = pygame.image.load("src/assets/left.png").convert_alpha()
+        self.playerLeft_1 = pygame.image.load("src/assets/left_1.png").convert_alpha()
+        self.spring = pygame.image.load("src/assets/spring.png").convert_alpha()
+        self.spring_1 = pygame.image.load("src/assets/spring_1.png").convert_alpha()
         self.direction = 0
         self.playerx = 400
         self.playery = 400
@@ -152,11 +152,12 @@ class DoodleJump:
     
     def run(self):
         clock = pygame.time.Clock()
+        FPS = 60
         self.generatePlatforms()
         pygame.display.set_caption("Đi tìm chiến thắng!!")        
         while True:
             self.screen.fill((255,255,255))
-            clock.tick(60)
+            clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == QUIT:
                     sys.exit()
@@ -174,6 +175,5 @@ class DoodleJump:
             self.updatePlatforms()
             self.screen.blit(self.font.render(str(self.score), -1, (0, 0, 0)), (25, 25))
             pygame.display.flip() 
-
-
+            
 DoodleJump().run()
