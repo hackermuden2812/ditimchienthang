@@ -9,3 +9,7 @@ Vậy nên sẽ có những thứ mà mình cần phải làm bây giờ :
 4. Tạo ra các Power Up
 5. Làm những công đoạn cuối cùng như là Game Over hay là
 lựa chọn nhân vật ở đoạn đầu, nếu được thì sẽ có chọn skin ( 1 tính năng khá là thú vị )
+
+Cập nhật 13/12/2021:
+
+T vừa update 2 file game FlappyBird và AlienShooter lên để anh em tìm hiểu qua
