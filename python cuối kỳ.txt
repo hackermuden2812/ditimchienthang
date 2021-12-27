@@ -1,13 +1,21 @@
-1. Tìm hiểu về các Syntax ở trong đoạn code đã cho
-2. Thêm các tính năng vào game, người nào có tính năng gì thì tự code
-3. Code lại mỗi phần nếu có thể sửa được
-4. Tìm asset
+Sẽ có những công việc sau tùy các bạn lựa chọn :
 
-NOTE:
-1. Cần thêm cái sàn cho nhân vật đứng đoạn đầu, và thêm dòng "Nhấn phím bất kỳ để
-bắt đầu trò chơi"
-2. Thêm màn hình GameOver và HighScore vào lúc nhân vật chết
-3. Tạo thêm chướng ngại vật. : https://github.com/thefrolov/Doodle-Jump có thể tham khảo
-ở đây
-4. Thay các lò xo bằng boost.
-5. Đổi asset nhân vật, tấm ván, background.
+Làm lực bắn sẽ làm các việc như sau này : 
+1. Thanh chỉnh góc.
+2. Đường đạn bay
+3. Sự va chạm giữa đạn và nhân vật
+
+Làm power-up :
+1. Tương tác giữa Power-up và đạn ( Tức là bấm vào power-up đạn sẽ thay đổi, bao gồm cả việc con nhân vật sẽ bị mất nhiều máu hơn )
+
+Đứa làm màn hình bắt đầu và kết thúc :
+1. Làm màn hình bắt đầu và kết thúc.
+2. Hiển thị điểm ( không quan trọng ).
+
+Cập nhật 27/12/2021:
+
+1. Hôm nay sẽ làm về 2 nhân vật ném nhau.
+2. Làm các power-up
+3. Thay đổi đối tượng vũ khí khi nhấn power-up.
+4. Mất máu khi bị ném trúng.
+5. Hiển thị màn hình game over.
