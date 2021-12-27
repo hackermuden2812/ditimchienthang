@@ -1,14 +1,16 @@
-Tình hình là Project cũ bể rồi nên anh em mình chuyển qua làm Project về game
-giống Gunny.
+Sẽ có những công việc sau tùy các bạn lựa chọn :
 
-Vậy nên sẽ có những thứ mà mình cần phải làm bây giờ :
+Làm lực bắn sẽ làm các việc như sau này : 
+1. Thanh chỉnh góc.
+2. Đường đạn bay
+3. Sự va chạm giữa đạn và nhân vật
 
-1. Tạo Scenes để 2 nhân vật bắn nhau.
-2. Tìm hiểu về góc bắn và lực bắn qua source code của Gunbound trên Github
-3. Tìm kiếm Asset và cách làm nhân vật chuyển động.
-4. Tạo ra các Power Up
-5. Làm những công đoạn cuối cùng như là Game Over hay là
-lựa chọn nhân vật ở đoạn đầu, nếu được thì sẽ có chọn skin ( 1 tính năng khá là thú vị )
+Làm power-up :
+1. Tương tác giữa Power-up và đạn ( Tức là bấm vào power-up đạn sẽ thay đổi, bao gồm cả việc con nhân vật sẽ bị mất nhiều máu hơn )
+
+Đứa làm màn hình bắt đầu và kết thúc :
+1. Làm màn hình bắt đầu và kết thúc.
+2. Hiển thị điểm ( không quan trọng ).
 
 Cập nhật 27/12/2021:
 
