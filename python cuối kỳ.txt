@@ -10,6 +10,10 @@ Vậy nên sẽ có những thứ mà mình cần phải làm bây giờ :
 5. Làm những công đoạn cuối cùng như là Game Over hay là
 lựa chọn nhân vật ở đoạn đầu, nếu được thì sẽ có chọn skin ( 1 tính năng khá là thú vị )
 
-Cập nhật 13/12/2021:
+Cập nhật 27/12/2021:
 
-T vừa update 2 file game FlappyBird và AlienShooter lên để anh em tìm hiểu qua
+1. Hôm nay sẽ làm về 2 nhân vật ném nhau.
+2. Làm các power-up
+3. Thay đổi đối tượng vũ khí khi nhấn power-up.
+4. Mất máu khi bị ném trúng.
+5. Hiển thị màn hình game over.
