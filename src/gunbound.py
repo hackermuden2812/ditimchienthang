@@ -2,7 +2,7 @@ import pygame
 import random
 import sys
 from sprites import *
-from config import *
+from Gunny.config import *
 
 class Game :
     def __init__(self) :

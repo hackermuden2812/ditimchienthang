@@ -1,7 +1,7 @@
 import pygame
 import math
 import random
-from config import *
+from Gunny.config import *
 
 
 class Player(pygame.sprite.Sprite):
