@@ -110,7 +110,7 @@ class Game:
     def draw(self):
         self.screen.fill(BG_COLOR)
         self.all_sprites.draw(self.screen)
-        pg.display.flip()
+        pg.display.flip() 
 
 
 if __name__ == '__main__':

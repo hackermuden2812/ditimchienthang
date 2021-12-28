@@ -1,0 +1,5 @@
+self.all_sprites = pygame.sprite.Group()
+        self.player1 = Player('src/Gunny/assets/nv1.png',(0, 0), self.all_sprites, self.bullets)
+        self.player2 = Player('src/Gunny/assets/player1.png',(700, 0), self.all_sprites, self.bullets)
+        self.healthBar_a = HealthBar('src/Gunny/assets/redHealthBar.png')
+        self.healthBar_b = HealthBar('src/Gunny/assets/blueHealthBar.png')
