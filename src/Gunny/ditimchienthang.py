@@ -1,7 +1,8 @@
-import pygame
+import pygame, sys
 from Settings import Settings
 import GameFunction as gf
 from Characters import Character
+
 def run_game():
     pygame.init()
     g_settings = Settings()
