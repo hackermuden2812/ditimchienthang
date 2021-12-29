@@ -1,8 +1,6 @@
 import pygame
-
-class Character():
+class Bullet():
     def __init__(self,fileName,direction):
-        self.image = pygame.transform.smoothscale(pygame.image.load(fileName),(120,200))
+        self.image = pygame.transform.smoothscale(pygame.image.load(fileName),(100, 50))
         self.rect = self.image.get_rect()
         self.direction = direction
-        self.turn = True

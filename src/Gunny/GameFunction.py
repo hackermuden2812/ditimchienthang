@@ -1,9 +1,18 @@
 import sys
 import pygame
-def check_events():
-    for event in pygame.event.get():
+from pygame import mouse
+from pygame.constants import MOUSEBUTTONDOWN
+def check_events(bullets, click):
+    for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
             sys.exit()
+        elif event.type == MOUSEBUTTONDOWN:
+            if click % 2 == 0:
+                bullets.append([100,500])
+            else :
+                bullets.append([1200,500])
+            # click += 1
+            
 def update_screen(g_settings, screen):
      """Cập nhật các ảnh lên trên màn hình và chuyển sang màn hình mới"""
      #Thực hiện vẽ lại màn hình trong mỗi lần lặp
