@@ -12,6 +12,7 @@ def check_events(bullets, click):
             else :
                 bullets.append([1200,500])
             # click += 1
+            
 def update_screen(g_settings, screen):
      """Cập nhật các ảnh lên trên màn hình và chuyển sang màn hình mới"""
      #Thực hiện vẽ lại màn hình trong mỗi lần lặp

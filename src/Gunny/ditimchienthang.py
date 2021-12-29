@@ -4,7 +4,7 @@ from HealthBar import HealthBar
 from Settings import Settings
 import GameFunction as gf
 from Characters import Character
-
+import time
 
 def run_game():
 
@@ -33,14 +33,13 @@ def run_game():
         
         gf.update_screen(g_settings, window)
         if character_a.turn:
-            click =0
-            gf.check_events(bulletsA, click)
-            for b in range(len(bullets)):
-                if  bulletsA[b][0] < window.window_width:
+            gf.check_events(bulletsA, 0)
+            for b in range(len(bulletsA)):
+                if  bulletsA[b][0] < g_settings.window_width:
                     bulletsA[b][0] += 5*character_a.direction
 
             for bullet in bulletsA[:]:
-                if bullet[0] < 0:
+                if bullet[0] > g_settings.window_width:
                     bulletsA.remove(bullet)
         
             window.blit(g_settings.bg,(0,0))          
@@ -51,12 +50,14 @@ def run_game():
             print("Bullets A")
             print(bulletsA)     
             for event in pygame.event.get():
-                if event.type == MOUSEBUTTONUP:      
+                if event.type == MOUSEBUTTONUP:  
+                    fire()    
                     character_a.turn = False
                     character_b.turn = True
+
+            # time.sleep(1)
         elif character_b.turn:
-            click =1
-            gf.check_events(bulletsB, click)
+            gf.check_events(bulletsB, 1)
 
             for b in range(len(bulletsB)):
                 if bulletsB[b][0] >0:
@@ -71,15 +72,19 @@ def run_game():
             print("Bullets B" )
             print(bulletsB)
             for event in pygame.event.get():
-                if event.type == MOUSEBUTTONUP:                    
+                if event.type == MOUSEBUTTONUP:    
+                    fire()                
                     character_b.turn = False
                     character_a.turn = True
-        
 
+            # time.sleep(1)
         window.blit(character_a.image,(0,390))
         window.blit(character_b.image,(g_settings.window_width-120,390))
         window.blit(healthBar_a.image,(0,0))
         window.blit(pygame.transform.flip(healthBar_b.image,True,False),(g_settings.window_width-400,0))
-
+        def fire ():
+            pygame.mixer.init()
+            pygame.mixer.music.load('src/Gunny/assets/fireSound.wav')
+            pygame.mixer.music.play()
 
 run_game()
