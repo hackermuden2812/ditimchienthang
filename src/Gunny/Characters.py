@@ -5,4 +5,5 @@ class Character():
         self.image = pygame.transform.smoothscale(pygame.image.load(fileName),(120,200))
         self.rect = self.image.get_rect()
         self.direction = direction
-        self.turn = True
+        self.turn = False
+        self.isShooting = True
