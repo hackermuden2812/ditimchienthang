@@ -1,25 +1,35 @@
 import pygame
-class Bullet():
-    def __init__(self,x,y):
+import math
+from config import *
+vec = pygame.math.Vector2
+gX=0
+gY=-9.8
+t=0
+dt=0.01
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self,x,y,side):
+        pygame.sprite.Sprite.__init__(self)
         self.x =x
         self.y = y
-        self.bullet=[]
-        self.bulletFrameIndex =0
-        self.update_time = pygame.time.get_ticks()
-        for i in range (5):
-            bulletImg= pygame.image.load(f'src/Gunny/assets/Player1/Bullet/bullet{i}')
-            bulletImg=pygame.transform.smoothscale(bulletImg, (34,28))
-            self.bullet.append(bulletImg)
-        self.bulletImage =self.bullet[self.bulletFrameIndex]
-        self.rect = self.bulletImage.get_rect()
+        self.isFlying =False
+        if side == 1:
+            self.image =pygame.transform.smoothscale(pygame.image.load('src/Gunny/assets/Player1/Bullet/bullet0.png'), (34,28))
+        elif side == -1:
+            self.image =pygame.transform.flip(pygame.transform.smoothscale(pygame.image.load('src/Gunny/assets/Player1/Bullet/bullet0.png'), (34,28)),True,False)
+        # self.pos=(self.x,self.y)
+        self.rect = self.image.get_rect()
         self.rect.center = (x,y)
     def update(self):
-        animation_cooldown = 100
-        self.bulletImage = self.bullet[self.bulletFrameIndex]
-        if pygame.time.get_ticks() - self.update_time > animation_cooldown:
-            self.update_time = pygame.time.get_ticks()
-            self.bulletFrameIndex+=1
-        if self.bulletFrameIndex > len(self.bullet):
-            self.frame_index=0
-    def draw(self,window):
-        window.blit(self.bulletImage, self.rect)
+        if self.isFlying == True:
+            #update vị trí
+            self.rect.x +=10
+        if self.rect.x >= WIDTH -120:
+            self.kill()
+            
+    def shot(self):
+        self.isFlying = True
+
+    def draw(self):
+        SCREEN.blit(self.image, self.rect)
+    

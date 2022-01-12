@@ -1,12 +1,21 @@
+import math
 import pygame
 import random
+
+from Bullet import Bullet
+from DirectionBar2 import DirectionBar2
+
 pygame.init()
 
-class Player():
-    def __init__(self, x, y, name, max_hp, strength, powerups):
+
+class Player2(pygame.sprite.Sprite):
+    def __init__(self, x, y, name, maxHp, strength, powerups):
+        pygame.sprite.Sprite.__init__(self)
+        self.x=x
+        self.y=y
         self.name = name
-        self.max_hp = max_hp
-        self.hp = max_hp
+        self.maxHp = maxHp
+        self.hp = maxHp
         self.strength = strength
         self.start_powerups = powerups
         self.powerups = powerups
@@ -18,14 +27,16 @@ class Player():
         # tải ảnh đỨng
         temp_list = []
         for i in range(10):
-            img = pygame.image.load(f'src/Gunny/assets/Player1/Idle/idle{i}.png')
+            img = pygame.image.load(
+                f'src/Gunny/assets/Player1/Idle/idle{i}.png')
             img = pygame.transform.smoothscale(img, (150, 150))
             temp_list.append(img)
         self.animation_list.append(temp_list)
         # tải các frame bắn
         temp_list = []
         for i in range(5):
-            img = pygame.image.load(f'src/Gunny/assets/Player1/Shoot/shoot{i}.png')
+            img = pygame.image.load(
+                f'src/Gunny/assets/Player1/Shoot/shoot{i}.png')
             img = pygame.transform.smoothscale(img, (150, 150))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -33,14 +44,20 @@ class Player():
         # load death images
         temp_list = []
         for i in range(10):
-            img = pygame.image.load(f'src/Gunny/assets/Player1/Dead/dead{i}.png')
+            img = pygame.image.load(
+                f'src/Gunny/assets/Player1/Dead/dead{i}.png')
             img = pygame.transform.smoothscale(img, (150, 150))
             temp_list.append(img)
         self.animation_list.append(temp_list)
+        for i in range(len(self.animation_list)):
+            for j in range(len(self.animation_list[i])):
+                self.animation_list[i][j]= pygame.transform.flip(self.animation_list[i][j],True,False)  
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        
+        self.dir=DirectionBar2(self.rect.topleft[0],self.rect.topleft[1],4)
+
+
     def update(self):
         animation_cooldown = 100
         # xử lí animation
@@ -51,21 +68,27 @@ class Player():
             self.frame_index += 1
         # Khi đến frame cuối của animation sẽ reset frame về 0
         if self.frame_index >= len(self.animation_list[self.action]):
-            if self.action == 3:
+            if self.action == 2:
                 self.frame_index = len(self.animation_list[self.action]) - 1
             else:
                 self.idle()
-       
+
     def idle(self):
         self.action = 0
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
 
-    def attack(self, target):
+    def attack(self):
+        
+        # set variables to attack animation
+        self.action = 1
+        self.frame_index = 0
+        self.update_time = pygame.time.get_ticks()
+    def takeDamage (self, target):
+        damage = self.strength
         # deal damage to enemy
-        rand = random.randint(-5, 5)
-        damage = self.strength + rand
-        target.hp -= damage
+        rand = random.randint(-3, 3)
+        target.hp -= (damage +rand)
         # run enemy hurt animation
 
         # check if target has died
@@ -74,30 +97,19 @@ class Player():
             target.alive = False
             target.death()
 
-        # set variables to attack animation
-        self.action = 1
-        self.frame_index = 0
-        self.update_time = pygame.time.get_ticks()
-
-    def hurt(self):
-        # set variables to hurt animation
-        self.action = 2
-        self.frame_index = 0
-        self.update_time = pygame.time.get_ticks()
-
     def death(self):
         # set variables to death animation
-        self.action = 3
+        self.action = 2
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
 
     def reset(self):
         self.alive = True
-        self.potions = self.start_potions
-        self.hp = self.max_hp
+        self.potions = self.start_powerups
+        self.hp = self.maxHp
         self.frame_index = 0
         self.action = 0
         self.update_time = pygame.time.get_ticks()
 
-    def draw(self,screen):
+    def draw(self, screen):
         screen.blit(self.image, self.rect)

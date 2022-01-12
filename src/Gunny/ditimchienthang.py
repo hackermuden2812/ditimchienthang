@@ -2,7 +2,7 @@ import sys
 import pygame
 from pygame.constants import K_SPACE, MOUSEBUTTONUP
 from Bullet import Bullet
-from HealthBar import HealthBar
+
 from Settings import Settings
 import GameFunction as gf
 from Characters import Character
@@ -14,14 +14,12 @@ class Game:
         pygame.init()
         self.g_settings = Settings()
         #bullet
-        self.bullets = Bullet('src/Gunny/assets/bullet.png',0,5)
+        self.bullets = Bullet(120,400)
         #Player 1
         self.character_a = Character('Player1', 1,3,self.bullets)
-        self.healthBar_a = HealthBar('src/Gunny/assets/redHealthBar.png')
         #Player 2
         self.character_b = Character('Player1', -1,3,self.bullets)
         self.character_b.image= pygame.transform.flip(self.character_b.image,True,False)
-        self.healthBar_b = HealthBar('src/Gunny/assets/blueHealthBar.png')
         #game clock
         self.clock = pygame.time.Clock()
         self.clock.tick(self.g_settings.FPS)
@@ -54,8 +52,7 @@ class Game:
             self.draw_bg()        
             self.window.blit(self.character_a.image,(0,390))
             self.window.blit(self.character_b.image,(self.g_settings.window_width-120,390))
-            self.window.blit(self.healthBar_a.image,(0,0))
-            self.window.blit(pygame.transform.flip(self.healthBar_b.image,True,False),(self.g_settings.window_width-400,0))
+            
             pygame.display.update()
     def fire (self,bullets,player,enemy):
         enemy.turn = False

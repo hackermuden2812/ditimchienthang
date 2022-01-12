@@ -4,7 +4,7 @@ import pygame
 class Ship:
     def __init__(self, ai_settings, screen):
         self.screen = screen
-        self.image = pygame.image.load("Assets/ship.png")
+        self.image = pygame.image.load("src/Gunny/assets/Player1/Bullet/bullet0.png")
         self.ai_settings = ai_settings
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()

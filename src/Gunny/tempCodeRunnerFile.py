@@ -1,2 +1,3 @@
-self.clockwise2.update()
-            self.clockwise2.draw(self.window)
+self.clicked = True
+                    bullet1.shot()
+                    bullet1.update()
