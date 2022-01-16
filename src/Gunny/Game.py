@@ -13,17 +13,22 @@ from config import *
 pygame.init()
 
 
+# tao cac sprtite gr
+
+bullet1_group = pygame.sprite.GroupSingle()
+bullet2_group = pygame.sprite.GroupSingle()
+
 #Tạo các item liên quan đến player1
 player1 = Player1(120,510,'Player1',100,10,3)
 # clockwise1 = Clockwise()
 healthBar1 = HealthBar(100,0,player1.hp,player1.maxHp)
-bullet1= Bullet(player1.x,player1.y,1)
-
+bullet1= Bullet(player1.rect.topright[0],player1.rect.topright[1],1)
+bullet1_group.add(bullet1)
 #Tạo các item liên quan đến player2
 player2 = Player2(WIDTH-120,510,'Player1',100,10,3)
 # clockwise2 = Clockwise()
 healthBar2 = HealthBar(WIDTH-500,0,player2.hp,player2.maxHp)
-bullet2= Bullet(player2.x,player2.y,-1)
+bullet2= Bullet(player2.rect.topleft[0],player2.rect.topleft[1],-1)
 #lật ngược (flip) tất cả hình ảnh của Player2 để player2 quay có hướng đối diện player 1
 class Game:
     def __init__(self):
@@ -38,8 +43,15 @@ class Game:
         self.game_over = 0        
         self.running =True  
 
+        self.status = False
+
     def draw_bg(self):
         SCREEN.blit(BACKGROUND,(0,0))
+    
+    def test(self):
+        if self.status:
+            bullet1.update()
+
     def drawText():
         pass
     def run(self):
@@ -50,14 +62,8 @@ class Game:
         while self.running:
             CLOCK.tick(FPS)
             #tạo background
-            self.draw_bg()
-
-            #update Player 1
-            
-
-            #update Player 2
-            
-
+            self.draw_bg() 
+            self.test()
             players_sprites.update()
             bullet_sprites.update()
             players_sprites.draw(SCREEN)
@@ -83,17 +89,13 @@ class Game:
                     self.action_cooldown += 1
                     if self.action_cooldown >= self.action_wait_time:
                         if self.shooting:
-                            bullet_sprites.add(bullet1)                                                  
+                            # bullet_sprites.add(bullet1)                                                  
                             player1.attack()
-                            bullet1.shot()
-                            # bullet_sprites.update()
-                            # bullet_sprites.draw(SCREEN)
+                            
+                            
                             if bullet1.rect.colliderect(player2.rect):   
                                 player1.takeDamage(player2)   
                                 bullet1.kill()                    
-                                
-                            elif bullet1.y > HEIGHT-1000 or bullet1.x > WIDTH:
-                                bullet1.kill()
                             self.current_player +=1
                             self.action_cooldown =0
 
@@ -104,8 +106,9 @@ class Game:
                     self.action_cooldown += 1
                     if self.action_cooldown >= self.action_wait_time:
                         if self.shooting:
-                            bullet_sprites.add(bullet2)
+                            # bullet_sprites.add(bullet2)
                             player2.attack()
+                            
                             player2.takeDamage(player1)
                             self.current_player +=1
                             self.action_cooldown =0
@@ -116,35 +119,38 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == pygame.KEYDOWN:
-                    if event.type== pygame.K_UP:
-                        if self.current_player == 1:
-                            player1.dir.curPos+=1
-                            print('Press')
-                        else :
-                            player2.dir.curPos+=1
+            keyPressed = pygame.key.get_pressed()
+            if event.type== pygame.K_UP:
+                if self.current_player == 1:
+                    player1.dir.up()
+                    # player1.dir.draw()
+                    print('Press 1')
+                else :
+                    player2.dir.up()
+                    # player2.dir.draw()
 
-                    elif event.type == pygame.K_DOWN:
-                        if self.current_player == 1:
-                            player1.dir.curPos-=1
-                            print('Press')
-                        else :
-                            player2.dir.curPos-=1
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    print('Press')
-                    self.shooting = True
-                    if self.current_player == 1:
-                        bullet1.shot()
-                    else :
-                        bullet2.shot()
-            
-                else:
-                    self.shooting = False
-                    
-            
-
+            elif keyPressed[pygame.K_DOWN]:
+                if self.current_player == 1:
+                    player1.dir.down()
+                    # player1.dir.draw()
+                    print('Press 2')
+                else :
+                    player2.dir.down()
+                    # player2.dir.draw()
+            if keyPressed[pygame.K_SPACE]:
+                # print('Press')
+                self.shooting = True
+                self.status = True
+                if self.current_player == 1:
+                    bullet1.shot()
+                    bullet1.update()
+                else :
+                    bullet2.shot()
+                    bullet2.update()
+        
+            else:
+                self.shooting = False
             pygame.display.flip()
-
         pygame.quit()
 
 

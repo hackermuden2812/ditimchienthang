@@ -1,3 +1,3 @@
-self.clicked = True
-                    bullet1.shot()
-                    bullet1.update()
+if self.rect.x >= WIDTH -120:
+        #     self.kill()
+        #     return

@@ -55,7 +55,7 @@ class Player2(pygame.sprite.Sprite):
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.dir=DirectionBar2(self.rect.topleft[0],self.rect.topleft[1],4)
+        self.dir=DirectionBar2(self.rect.topleft[0],self.rect.topleft[1])
 
 
     def update(self):
