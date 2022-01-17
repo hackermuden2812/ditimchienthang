@@ -1,51 +1,35 @@
 import pygame
-import math
-from config import *
-vec = pygame.math.Vector2
-gX=0
-gY=-9.8
-t=0
-dt=0.01
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self,x,y,side):
-        pygame.sprite.Sprite.__init__(self)
-        self.x =x
-        self.y = y
-        self.isFlying =False
-        self.side =side
-        self.image = pygame.image.load('src/Gunny/assets/Player1/Bullet/bullet0.png')
-        if side == 1:
-            self.image =pygame.transform.smoothscale(pygame.image.load('src/Gunny/assets/Player1/Bullet/bullet0.png'), (34,28))
-        elif side == -1:
-            self.image =pygame.transform.flip(pygame.transform.smoothscale(pygame.image.load('src/Gunny/assets/Player1/Bullet/bullet0.png'), (34,28)),True,False)
-        self.pos=(self.x,self.y)
-        self.rect = self.image.get_rect()
-        self.rect.center = (x,y)
-    def update(self):
-        if self.isFlying == True:
-            #update vị trí
-            self.animation()
-        # if self.rect.x >= WIDTH -120:
-        #     self.kill()
-        #     return
-      
-            
-    def shot(self):
-        self.isFlying = True
-
-    def draw(self):
-        SCREEN.blit(self.image, self.rect)
-
-
-    def animation(self):
-        self.rect.x += 5*self.side
-        self.draw()
-
-    # def loadImage(self,side):
-
-        # if side == 1:
-        #     self.image =pygame.transform.smoothscale(pygame.image.load('src/Gunny/assets/Player1/Bullet/bullet0.png'), (34,28))
-        # elif side == -1:
-        #     self.image =pygame.transform.flip(pygame.transform.smoothscale(pygame.image.load('src/Gunny/assets/Player1/Bullet/bullet0.png'), (34,28)),True,False)
+    def __init__(self, surface, speed, angle,side):
+        super().__init__()
+        self.side = side
+        self.surface = surface
+        self.speed = speed
+        self.angle = angle
+        
+        self.direction = pygame.math.Vector2(0,0) # dieu huong bang vecto
+        
+        self.image = pygame.transform.smoothscale(pygame.image.load('src/Gunny/Assets/Player1/Bullet/bullet4.png'),(40,34))
+        self.rect = self.image.get_rect(topleft= (100, 400))
+        
+        self.shoot = False
     
+    def fly_with_speed(self):
+        self.rect.x += self.speed * self.side
+        self.gravity()
+    
+    def gravity(self):
+        self.direction.y += 0.5
+        self.rect.y += self.direction.y
+    
+    def shot(self):
+        self.direction.y -= self.angle
+        self.rect.y += self.direction.y
+        self.shoot = True
+        
+    
+    def update(self):
+        if self.shoot == True:
+            self.fly_with_speed()
+        self.surface.blit(self.image, self.rect)

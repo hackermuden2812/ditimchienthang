@@ -1,2 +1,2 @@
-
-            all_sprites.update()
+        bar.paused(window)
+                print('press'+ bar.currentPower)

@@ -28,7 +28,8 @@ class DirectionBar1():
             self.curPos = 0
         elif self.curPos >8:
             self.curPos = 8
-        self.draw()
+        # pygame.draw.line(SCREEN,BLACK,(self.x,self.y), self.barPos[self.curPos],3)
+
         
     def down(self):
         self.curPos -= 1
@@ -36,11 +37,13 @@ class DirectionBar1():
             self.curPos = 0
         elif self.curPos >8:
             self.curPos = 8
-        self.draw()
+        # pygame.draw.line(SCREEN,BLACK,(self.x,self.y), self.barPos[self.curPos],3)
+        
         
 
     def draw(self):
         pygame.draw.line(SCREEN,BLACK,(self.x,self.y), self.barPos[self.curPos],3)
+        
 
         
         

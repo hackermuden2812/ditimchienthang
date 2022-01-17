@@ -10,6 +10,9 @@ from Player1 import Player1
 from Player2 import Player2
 from DirectionBar1 import DirectionBar1
 from config import *
+
+from Bullet import Bullet
+
 pygame.init()
 
 
@@ -22,13 +25,16 @@ bullet2_group = pygame.sprite.GroupSingle()
 player1 = Player1(120,510,'Player1',100,10,3)
 # clockwise1 = Clockwise()
 healthBar1 = HealthBar(100,0,player1.hp,player1.maxHp)
-bullet1= Bullet(player1.rect.topright[0],player1.rect.topright[1],1)
+bullet1= Bullet(SCREEN, 20, 20,1)
 bullet1_group.add(bullet1)
 #Tạo các item liên quan đến player2
 player2 = Player2(WIDTH-120,510,'Player1',100,10,3)
 # clockwise2 = Clockwise()
 healthBar2 = HealthBar(WIDTH-500,0,player2.hp,player2.maxHp)
-bullet2= Bullet(player2.rect.topleft[0],player2.rect.topleft[1],-1)
+bullet2= Bullet(SCREEN, 20, 20,-1)
+
+linhchan = Bullet(SCREEN, 20, 5,1)
+
 #lật ngược (flip) tất cả hình ảnh của Player2 để player2 quay có hướng đối diện player 1
 class Game:
     def __init__(self):
@@ -42,16 +48,11 @@ class Game:
         self.shooting = False
         self.game_over = 0        
         self.running =True  
-
+        self.pressed = False
         self.status = False
 
     def draw_bg(self):
         SCREEN.blit(BACKGROUND,(0,0))
-    
-    def test(self):
-        if self.status:
-            bullet1.update()
-
     def drawText():
         pass
     def run(self):
@@ -63,7 +64,6 @@ class Game:
             CLOCK.tick(FPS)
             #tạo background
             self.draw_bg() 
-            self.test()
             players_sprites.update()
             bullet_sprites.update()
             players_sprites.draw(SCREEN)
@@ -82,16 +82,19 @@ class Game:
             self.powerups = False
             self.target = None
 
+            # linhchan.update()
+            # bullet2.update()
+            # bullet1.update()
+            
             #player1 attack
             if player1.alive :
                 if self.current_player ==1:
                     player1.dir.draw()
-                    self.action_cooldown += 1
+                    self.action_cooldown += 1 # animation
                     if self.action_cooldown >= self.action_wait_time:
                         if self.shooting:
-                            # bullet_sprites.add(bullet1)                                                  
                             player1.attack()
-                            
+                            bullet1.update()
                             
                             if bullet1.rect.colliderect(player2.rect):   
                                 player1.takeDamage(player2)   
@@ -108,7 +111,7 @@ class Game:
                         if self.shooting:
                             # bullet_sprites.add(bullet2)
                             player2.attack()
-                            
+                            bullet2.update()
                             player2.takeDamage(player1)
                             self.current_player +=1
                             self.action_cooldown =0
@@ -120,7 +123,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
             keyPressed = pygame.key.get_pressed()
-            if event.type== pygame.K_UP:
+            if keyPressed[pygame.K_UP]:
                 if self.current_player == 1:
                     player1.dir.up()
                     # player1.dir.draw()
@@ -137,16 +140,19 @@ class Game:
                 else :
                     player2.dir.down()
                     # player2.dir.draw()
-            if keyPressed[pygame.K_SPACE]:
-                # print('Press')
+            if keyPressed[pygame.K_SPACE] and not self.pressed:
+                print('Press space')
                 self.shooting = True
-                self.status = True
+                # self.status = True
                 if self.current_player == 1:
+                    # linhchan.shot()
+                    self.pressed = True 
                     bullet1.shot()
-                    bullet1.update()
-                else :
+                    # bullet1.update()
+                elif self.current_player == 2:
+                    self.pressed = True 
                     bullet2.shot()
-                    bullet2.update()
+                    # bullet2.update()
         
             else:
                 self.shooting = False
