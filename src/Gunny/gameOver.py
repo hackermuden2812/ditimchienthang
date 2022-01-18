@@ -6,7 +6,7 @@ pygame.init()
 # set window
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('Gunny')
-bg = pygame.image.load('D:\Trên trường\Lập trình nâng cao - Python\ditimchienthang\src\Gunny\Assets\Background-game.jpg')
+bg = pygame.image.load('src/Gunny/assets/Background-game.jpg')
 
 font = pygame.font.SysFont(None, 50)
 

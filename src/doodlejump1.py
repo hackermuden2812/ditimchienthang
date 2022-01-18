@@ -1,7 +1,9 @@
-import pygame   
-from pygame.locals import *
-import sys
 import random
+import sys
+
+import pygame
+from pygame.locals import *
+
 
 class DoodleJump:
     def __init__(self):
