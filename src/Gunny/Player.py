@@ -1,7 +1,7 @@
 import math
-from tkinter.tix import WINDOW
 import pygame
 import random
+from DirectionBar1 import DirectionBar1
 from ShotPower import ShotPower
 from config import *
 from Bullet import Bullet
@@ -19,8 +19,6 @@ class Player(pygame.sprite.Sprite):
         self.maxHp = maxHp
         self.hp = maxHp
         self.strength = strength
-        self.start_powerups = powerups
-        self.powerups = powerups
         self.alive = True
         self.animation_list = []
         self.frame_index = 0
@@ -65,11 +63,12 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.bullet = Bullet(SCREEN,self.rect.topleft[0]-50,self.rect.topleft[1],5,15,side)
+        self.bullet = Bullet(f'src/Gunny/assets/{self.name}/bullet.png',SCREEN,self.rect.topleft[0]-50,self.rect.topleft[1],5,15,side)
         if side == -1:
-            self.dir=DirectionBar2(self.rect.topleft[0],self.rect.topleft[1])
-            self.shotPower = ShotPower(self.rect.bottomright[0],self.rect.bottomright[1]+30)
+            self.dir=DirectionBar2(self.rect.topleft[0]+ 50,self.rect.topleft[1])
+            self.shotPower = ShotPower(self.rect.bottomleft[0],self.rect.bottomleft[1]+30)
         elif side ==1:
+            self.dir=DirectionBar1(self.rect.topright[0]-100,self.rect.topright[1])
             self.shotPower = ShotPower(self.rect.bottomleft[0]+50,self.rect.bottomleft[1]+30)
 
     def resetBullet(self,bullet):

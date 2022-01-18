@@ -37,18 +37,14 @@ player2 = Player(WIDTH-120,540,'Knight',100,10,3,-1)
 # clockwise2 = Clockwise()
 healthBar2 = HealthBar(WIDTH-500,20,player2.hp,player2.maxHp)
 
-# linhchan = Bullet(SCREEN, 20, 5,1)
-#lật ngược (flip) tất cả hình ảnh của Player2 để player2 quay có hướng đối diện player 1
 class Game:
     bgX = 0
     def __init__(self):
-        self.current_player = 1
+        self.current_player = 2
         self.total_players = 2
         self.action_cooldown = 0
         self.action_wait_time = 90
         self.attack = False
-        self.powerups = False
-        self.powerups_effect = 15
         self.shooting = False
         self.game_over = 0        
         self.running =True  
@@ -59,49 +55,6 @@ class Game:
     def movingBackground(self,bgX):
         SCREEN.blit(BACKGROUND,(bgX,0))
         SCREEN.blit(BACKGROUND,(bgX+WIDTH,0))
-    # def chooseClass(self):
-    #     while True:
-    #         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-    #         SCREEN.fill((255,255,255))
-    #         Knight1 = Button(image=BUTTON_BG, pos=(WIDTH/2 -250, 300), 
-    #                             text_input="Knight 1", font=self.getFont(50), base_color="Black", hovering_color="White")
-
-    #         Knight1.changeColor(OPTIONS_MOUSE_POS)
-    #         Knight1.update(SCREEN)
-            
-    #         Elf1 = Button(image=BUTTON_BG, pos=(WIDTH/2+250, 300), 
-    #                             text_input="Elf 1", font=self.getFont(50), base_color="Black", hovering_color="White")
-
-    #         Elf1.changeColor(OPTIONS_MOUSE_POS)
-    #         Elf1.update(SCREEN)
-    #         optionPlay = Button(image=BUTTON_BG, pos=(1050, 700), 
-    #                             text_input="PLAY", font=self.getFont(50), base_color="Black", hovering_color="White")
-
-    #         optionPlay.changeColor(OPTIONS_MOUSE_POS)
-    #         optionPlay.update(SCREEN)
-    #         optionBack = Button(image=BUTTON_BG, pos=(150, 700), 
-    #                             text_input="Back", font=self.getFont(50), base_color="Black", hovering_color="White")
-
-    #         optionBack.changeColor(OPTIONS_MOUSE_POS)
-    #         optionBack.update(SCREEN)
-    #         chooseClass = self.getFont(45).render('Choose Class', True, "Black")
-    #         chooseClassRect = chooseClass.get_rect(center=(WIDTH/2, 150))
-    #         SCREEN.blit(chooseClass,chooseClassRect)
-    #         for event in pygame.event.get():
-    #             if event.type == pygame.QUIT:
-    #                 pygame.quit()
-    #                 sys.exit()
-    #             if event.type == pygame.MOUSEBUTTONDOWN:            
-    #                 if optionBack.checkForInput(OPTIONS_MOUSE_POS):
-    #                     self.mainMenu()                
-    #                 if optionPlay.checkForInput(OPTIONS_MOUSE_POS):
-    #                     self.run()
-    #                 if Elf1.checkForInput(OPTIONS_MOUSE_POS):
-    #                     # Player2 = Player2(WIDTH-120,510,'Elf1',100,10,3)
-    #                     pass
-    #                 if Knight1.checkForInput(OPTIONS_MOUSE_POS):
-    #                     pass
-    #         pygame.display.update()
     def paused(self):
         while True :
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
@@ -264,55 +217,65 @@ class Game:
             self.attack = False
             self.powerups = False
             self.target = None
-
-            # linhchan.update()
-            # bullet2.update()
             
-            player2.bullet.update()        
-            player1.bullet.update()
+            self.current_player = player2.bullet.update(self.current_player)        
+            self.current_player = player1.bullet.update(self.current_player)
 
-            #player1 attack
-            if player1.alive :
-                if self.current_player ==1:
-                    player1.dir.draw()
-                    player1.shotPower.draw(SCREEN)
-                    player1.shotPower.update()
-                    self.action_cooldown += 1 # animation
-                    if self.action_cooldown >= self.action_wait_time:
-                        if self.shooting:
-                            player1.attack()
-                            # if player1.bullet.rect.colliderect(player2.rect) or player1.bullet.check_collision_border():   
-                            #     player1.takeDamage(player2)   
-                            #     player1.bullet.kill()                    
-                            self.current_player +=1
-                            self.action_cooldown =0
-
+            if self.current_player == 1:
+                player1.dir.draw()
+                player1.shotPower.draw(SCREEN)
+                player1.shotPower.update()
+                if self.shooting:
+                    player1.attack()
+                    if player1.bullet.rect.colliderect(player2.rect):
+                        player2.hurt()
+                        player1.takeDamage(player2)   
+                        player1.bullet.rect.x = 100
+                        player1.bullet.rect.y = 600
+                        self.shooting = player1.bullet.shoot
+                    # if player1.bullet.check_collision_border():
+                    #     # self.current_player += 1
+                    self.shooting = player1.bullet.shoot
+                        
+            elif self.current_player == 2:
+                player2.dir.draw()
+                player2.shotPower.draw(SCREEN)
+                player2.shotPower.update()
+                if self.shooting:
+                    player2.attack()
+                    if player2.bullet.rect.colliderect(player2.rect):
+                        player1.hurt()
+                        player2.takeDamage(player1)   
+                        player2.bullet.rect.x = 100
+                        player2.bullet.rect.y = 600
+                        # self.current_player -= 1
+                        self.shooting = player2.bullet.shoot
+                    # if player2.bullet.check_collision_border():
+                    #     # self.current_player -= 1
+                    self.shooting = player2.bullet.shoot
             #player2 attack
-            if player2.alive :
-                if self.current_player ==2:
-                    player2.dir.draw()
-                    player1.shotPower.draw(SCREEN)
-                    player1.shotPower.update()
-                    self.action_cooldown += 1
-                    if self.action_cooldown >= self.action_wait_time: 
-                        if self.shooting:
-                            # bullet_sprites.add(bullet2)
-                            # player2.shotPower.update()
+            # if player2.alive :
+            #     if self.current_player ==2:
+            #         player2.dir.draw()
+            #         player1.shotPower.draw(SCREEN)
+            #         player1.shotPower.update()
+            #         self.action_cooldown += 1
+            #         if self.action_cooldown >= self.action_wait_time: 
+            #             if self.shooting:
+            #                 # bullet_sprites.add(bullet2)
+            #                 # player2.shotPower.update()
 
-                            player2.attack()                            
-                            player2.takeDamage(player1)
-                            self.current_player +=1
-                            self.action_cooldown =0
-            if self.current_player > self.total_players :
-                self.current_player =1
+            #                 player2.attack()                            
+            #                 player2.takeDamage(player1)
+            #                 self.current_player +=1
+            #                 self.action_cooldown =0
+            # if self.current_player > self.total_players :
+            #     self.current_player =1
             
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                # if event.type==pygame.K_ESCAPE:
-                #     print('Paused')
-                #     self.paused()
             keyPressed = pygame.key.get_pressed()
             if keyPressed[pygame.K_UP]:
                 if self.current_player == 1:
@@ -335,22 +298,20 @@ class Game:
                 print('Press space')
 
                 self.shooting = True
-                # if not self.pressed:
-                # if self.current_player == 1:
-                #     player1.shotPower.paused(SCREEN)
-                #     self.pressed = True 
-                #     self.pressed = True
-                #     player1.bullet.speed = player1.shotPower.currentPower
-                #     player1.bullet.angle = player1.dir.curPos *2
-                #     player1.bullet.shot()
+                if not self.pressed:
+                    if self.current_player == 1:
+                        player1.shotPower.paused(SCREEN)
+                        self.pressed = True 
+                        player1.bullet.speed = player1.shotPower.currentPower
+                        player1.bullet.angle = player1.dir.curPos *2
+                        player1.bullet.shot()
 
-                # elif self.current_player == 2:
-                #     player2.shotPower.paused(SCREEN)
-                #     self.pressed = True 
-                #     # self.pressed = True
-                #     player2.bullet.speed = player2.shotPower.currentPower
-                #     player2.bullet.angle = player2.dir.curPos *2
-                #     player2.bullet.shot()
+                    if self.current_player == 2:
+                        player2.shotPower.paused(SCREEN)
+                        self.pressed = True 
+                        player2.bullet.speed = player2.shotPower.currentPower
+                        player2.bullet.angle = player2.dir.curPos *2
+                        player2.bullet.shot()
             else:
                 self.shooting = False
             if keyPressed[pygame.K_ESCAPE]:

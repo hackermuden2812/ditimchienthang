@@ -2,7 +2,7 @@ import pygame
 from config import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, surface,x,y, speed, angle,side):
+    def __init__(self,path, surface,x,y, speed, angle,side):
         super().__init__()
         self.side = side
         self.surface = surface
@@ -11,8 +11,10 @@ class Bullet(pygame.sprite.Sprite):
         self.pos = (x,y)
         self.direction = pygame.math.Vector2(0,0) # dieu huong bang vecto
         
-        self.image = pygame.transform.smoothscale(pygame.image.load('src/Gunny/Assets/Player1/Bullet/bullet4.png'),(40,34))
-        self.rect = self.image.get_rect(topleft= (100, 400))
+        self.image = pygame.transform.smoothscale(pygame.image.load(path),(40,34))
+        if side == -1 :
+            self.image = pygame.transform.flip(self.image,True,False)
+        self.rect = self.image.get_rect(center= (x, y))
         
         self.shoot = False
     
@@ -29,14 +31,22 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y += self.direction.y
         self.shoot = True
         
-    def check_collision_border(self):
-        bullet_x = self.rect.centerx
-        bullet_y = self.rect.centery
+    def check_collision_border(self, current_player):
+        bullet_x = self.rect.x
+        bullet_y = self.rect.y
         
-        return (bullet_x < 0 or bullet_x > WIDTH) or (bullet_y < 0)
-    
-    def update(self):
+        if (bullet_x < 0 or bullet_x > WIDTH) or (bullet_y > HEIGHT): 
+            self.rect.x = 100
+            self.rect.y = 400
+            self.shoot = False
+            if current_player == 1:
+                current_player += 1
+            else:
+                current_player -= 1
+        return current_player
+    def update(self, current_player):
         if self.shoot == True:
             self.fly_with_speed()
         self.surface.blit(self.image, self.rect)
-        print(self.rect.x,self.rect.y)
+        current_player = self.check_collision_border(current_player)
+        return current_player
