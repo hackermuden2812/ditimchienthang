@@ -34,8 +34,9 @@ class Bullet(pygame.sprite.Sprite):
         bullet_y = self.rect.centery
         
         return (bullet_x < 0 or bullet_x > WIDTH) or (bullet_y < 0)
-
+    
     def update(self):
         if self.shoot == True:
             self.fly_with_speed()
         self.surface.blit(self.image, self.rect)
+        print(self.rect.x,self.rect.y)

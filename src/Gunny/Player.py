@@ -1,18 +1,17 @@
 import math
-# from tkinter.tix import WINDOW
-from config import *
+from tkinter.tix import WINDOW
 import pygame
 import random
-
-from Bullet import Bullet
-from DirectionBar1 import DirectionBar1
 from ShotPower import ShotPower
+from config import *
+from Bullet import Bullet
+from DirectionBar2 import DirectionBar2
 
 pygame.init()
 
 
-class Player1(pygame.sprite.Sprite):
-    def __init__(self, x, y, name, maxHp, strength, powerups):
+class Player(pygame.sprite.Sprite):
+    def __init__(self, x, y, name, maxHp, strength, powerups,side):
         pygame.sprite.Sprite.__init__(self)
         self.x=x
         self.y=y
@@ -29,35 +28,52 @@ class Player1(pygame.sprite.Sprite):
         self.update_time = pygame.time.get_ticks()
         # tải ảnh đỨng
         temp_list = []
-        for i in range(10):
+        for i in range(1,11):
             img = pygame.image.load(
-                f'src/Gunny/assets/Player1/Idle/idle{i}.png')
-            img = pygame.transform.smoothscale(img, (150, 150))
+                f'src/Gunny/assets/{self.name}/Idle/Idle ({i}).png')
+            img = pygame.transform.smoothscale(img, (280, 250))
             temp_list.append(img)
         self.animation_list.append(temp_list)
         # tải các frame bắn
         temp_list = []
-        for i in range(5):
+        for i in range(1,11):
             img = pygame.image.load(
-                f'src/Gunny/assets/Player1/Shoot/shoot{i}.png')
-            img = pygame.transform.smoothscale(img, (150, 150))
+                f'src/Gunny/assets/{self.name}/Attack/Attack ({i}).png')
+            img = pygame.transform.smoothscale(img, (280, 250))
             temp_list.append(img)
         self.animation_list.append(temp_list)
-
-        # load death images
+        #tải các frame nv bị thương
         temp_list = []
-        for i in range(10):
+        for i in range(1,11):
             img = pygame.image.load(
-                f'src/Gunny/assets/Player1/Dead/dead{i}.png')
-            img = pygame.transform.smoothscale(img, (150, 150))
+                f'src/Gunny/assets/{self.name}/Hurt/Hurt ({i}).png')
+            img = pygame.transform.smoothscale(img, (280, 250))
             temp_list.append(img)
         self.animation_list.append(temp_list)
+        # tải các frame nv chết
+        temp_list = []
+        for i in range(1,11):
+            img = pygame.image.load(
+                f'src/Gunny/assets/{self.name}/Death/Death ({i}).png')
+            img = pygame.transform.smoothscale(img, (280, 250))
+            temp_list.append(img)
+        self.animation_list.append(temp_list)
+        if side == -1:
+            for i in range(len(self.animation_list)):
+                for j in range(len(self.animation_list[i])):
+                    self.animation_list[i][j]= pygame.transform.flip(self.animation_list[i][j],True,False)
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.dir=DirectionBar1(self.rect.topright[0],self.rect.topright[1])
-        self.bullet = Bullet(SCREEN,self.rect.topright[0],self.rect.topright[1],5,15,1)
-        self.shotPower = ShotPower(self.rect.bottomleft[0],self.rect.bottomleft[1]+30)
+        self.bullet = Bullet(SCREEN,self.rect.topleft[0]-50,self.rect.topleft[1],5,15,side)
+        if side == -1:
+            self.dir=DirectionBar2(self.rect.topleft[0],self.rect.topleft[1])
+            self.shotPower = ShotPower(self.rect.bottomright[0],self.rect.bottomright[1]+30)
+        elif side ==1:
+            self.shotPower = ShotPower(self.rect.bottomleft[0]+50,self.rect.bottomleft[1]+30)
+
+    def resetBullet(self,bullet):
+        pass
     def update(self):
         animation_cooldown = 100
         # xử lí animation
@@ -68,7 +84,7 @@ class Player1(pygame.sprite.Sprite):
             self.frame_index += 1
         # Khi đến frame cuối của animation sẽ reset frame về 0
         if self.frame_index >= len(self.animation_list[self.action]):
-            if self.action == 2:
+            if self.action == 3:
                 self.frame_index = len(self.animation_list[self.action]) - 1
             else:
                 self.idle()
@@ -82,6 +98,12 @@ class Player1(pygame.sprite.Sprite):
         
         # set variables to attack animation
         self.action = 1
+        self.frame_index = 0
+        self.update_time = pygame.time.get_ticks()
+    def hurt(self):
+        
+        # set variables to attack animation
+        self.action = 2
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
     def takeDamage (self, target):
@@ -99,7 +121,7 @@ class Player1(pygame.sprite.Sprite):
 
     def death(self):
         # set variables to death animation
-        self.action = 2
+        self.action = 3
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
 
