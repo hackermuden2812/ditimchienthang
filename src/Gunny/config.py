@@ -4,6 +4,7 @@ WIDTH= 1400
 HEIGHT= 800
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 BACKGROUND = pygame.transform.smoothscale(pygame.image.load('src/Gunny/assets/bg1.jpg'),(WIDTH,HEIGHT))  
+BUTTON_BG = pygame.transform.smoothscale(pygame.image.load('src/Gunny/assets/button.png'),(WIDTH/4,HEIGHT/4))
 pygame.display.set_caption("Gunny")      
 CLOCK = pygame.time.Clock()
 FPS = 60

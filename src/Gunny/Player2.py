@@ -1,7 +1,9 @@
 import math
+from tkinter.tix import WINDOW
 import pygame
 import random
-
+from ShotPower import ShotPower
+from config import *
 from Bullet import Bullet
 from DirectionBar2 import DirectionBar2
 
@@ -56,6 +58,8 @@ class Player2(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.dir=DirectionBar2(self.rect.topleft[0],self.rect.topleft[1])
+        self.bullet = Bullet(SCREEN,self.rect.topleft[0],self.rect.topleft[1],5,15,-1)
+        self.shotPower = ShotPower(self.rect.bottomleft[0],self.rect.bottomleft[1]+30)
 
 
     def update(self):

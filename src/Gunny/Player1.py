@@ -1,9 +1,12 @@
 import math
+# from tkinter.tix import WINDOW
+from config import *
 import pygame
 import random
 
 from Bullet import Bullet
 from DirectionBar1 import DirectionBar1
+from ShotPower import ShotPower
 
 pygame.init()
 
@@ -53,8 +56,8 @@ class Player1(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.dir=DirectionBar1(self.rect.topright[0],self.rect.topright[1])
-
-
+        self.bullet = Bullet(SCREEN,self.rect.topright[0],self.rect.topright[1],5,15,1)
+        self.shotPower = ShotPower(self.rect.bottomleft[0],self.rect.bottomleft[1]+30)
     def update(self):
         animation_cooldown = 100
         # xử lí animation

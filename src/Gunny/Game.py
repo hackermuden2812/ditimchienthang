@@ -1,4 +1,8 @@
+from cProfile import run
+from dis import Instruction
 import math
+from platform import python_branch
+from re import X
 import sys
 import pygame
 from pygame.constants import K_SPACE, K_UP, MOUSEBUTTONDOWN, MOUSEBUTTONUP, K_c
@@ -11,7 +15,10 @@ from Player2 import Player2
 from DirectionBar1 import DirectionBar1
 from config import *
 
+from Button import Button
 from Bullet import Bullet
+from ShotPower import ShotPower
+
 
 pygame.init()
 
@@ -24,19 +31,16 @@ bullet2_group = pygame.sprite.GroupSingle()
 #Tạo các item liên quan đến player1
 player1 = Player1(120,510,'Player1',100,10,3)
 # clockwise1 = Clockwise()
-healthBar1 = HealthBar(100,0,player1.hp,player1.maxHp)
-bullet1= Bullet(SCREEN, 20, 20,1)
-bullet1_group.add(bullet1)
+healthBar1 = HealthBar(100,20,player1.hp,player1.maxHp)
 #Tạo các item liên quan đến player2
 player2 = Player2(WIDTH-120,510,'Player1',100,10,3)
 # clockwise2 = Clockwise()
-healthBar2 = HealthBar(WIDTH-500,0,player2.hp,player2.maxHp)
-bullet2= Bullet(SCREEN, 20, 20,-1)
+healthBar2 = HealthBar(WIDTH-500,20,player2.hp,player2.maxHp)
 
-linhchan = Bullet(SCREEN, 20, 5,1)
-
+# linhchan = Bullet(SCREEN, 20, 5,1)
 #lật ngược (flip) tất cả hình ảnh của Player2 để player2 quay có hướng đối diện player 1
 class Game:
+    bgX = 0
     def __init__(self):
         self.current_player = 1
         self.total_players = 2
@@ -50,11 +54,113 @@ class Game:
         self.running =True  
         self.pressed = False
         self.status = False
+    def getFont(self,size):
+        return pygame.font.Font('src/Gunny/assets/EvilEmpire-4BBVK.ttf',size)
+    def movingBackground(self,bgX):
+        SCREEN.blit(BACKGROUND,(bgX,0))
+        SCREEN.blit(BACKGROUND,(bgX+WIDTH,0))
+    def paused(self):
+        while True :
+            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+            SCREEN.fill((255,255,255))
+            optionBack = Button(image=BUTTON_BG, pos=(WIDTH/2, 300), 
+                                text_input="BACK", font=self.getFont(50), base_color="Black", hovering_color="White")
 
+            optionBack.changeColor(OPTIONS_MOUSE_POS)
+            optionBack.update(SCREEN)
+            optionHome = Button(image=BUTTON_BG, pos=(WIDTH/2, 450), 
+                                text_input="HOME", font=self.getFont(50), base_color="Black", hovering_color="White")
+
+            optionHome.changeColor(OPTIONS_MOUSE_POS)
+            optionHome.update(SCREEN)
+            optionQuit = Button(image=BUTTON_BG, pos=(WIDTH/2, 600), 
+                                text_input="QUIT", font=self.getFont(50), base_color="Black", hovering_color="White")
+
+            optionQuit.changeColor(OPTIONS_MOUSE_POS)
+            optionQuit.update(SCREEN)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if optionHome.checkForInput(OPTIONS_MOUSE_POS):
+                        self.mainMenu()                
+                    if optionBack.checkForInput(OPTIONS_MOUSE_POS):
+                        self.run()                
+                    if optionQuit.checkForInput(OPTIONS_MOUSE_POS):
+                        pygame.quit()
+                        sys.exit()
+
+            pygame.display.update()
+    def instruction(self):
+        while True:
+            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+
+            SCREEN.fill((255,255,255))
+
+            instruction1 = self.getFont(45).render("Use the up and down arrow key to adjust the direction bar.", True, "Black")
+            instruction2 = self.getFont(45).render("Use the Spacebar to meter shot power and then shoot.", True, "Black")
+            instructionRect1 = instruction1.get_rect(center=(WIDTH/2, 260))
+            SCREEN.blit(instruction1, instructionRect1)
+            instructionRect2 = instruction2.get_rect(center=(WIDTH/2, 360))
+            SCREEN.blit(instruction2, instructionRect2)
+
+            OPTIONS_BACK = Button(image=BUTTON_BG, pos=(WIDTH/2, 460), 
+                                text_input="BACK", font=self.getFont(50), base_color="Black", hovering_color="White")
+
+            OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
+            OPTIONS_BACK.update(SCREEN)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+                        self.mainMenu()
+
+            pygame.display.update()
+    def mainMenu(self):
+        bgX=0
+        while True:
+            # SCREEN.blit(BACKGROUND,(0,0))
+            # self.draw_bg()
+            bgX -= 1
+            self.movingBackground(bgX)
+            if bgX <= -WIDTH:
+                bgX =0
+
+            mousePos = pygame.mouse.get_pos()
+            mainMenuText = self.getFont(75).render("MAIN MENU", True, (133,100,0))
+            mainMenuRect = mainMenuText.get_rect(center=(WIDTH/2, 150))
+            SCREEN.blit(mainMenuText, mainMenuRect)
+
+
+            PLAY_BUTTON = Button(image=BUTTON_BG, pos=(WIDTH / 2, 300), 
+                            text_input="PLAY", font=self.getFont(50), base_color="#d7fcd4", hovering_color="White")
+            INSTRUCTION_BUTTON = Button(image=BUTTON_BG, pos=(WIDTH / 2, 450), 
+                                text_input="INSTRUCTION", font=self.getFont(50), base_color="#d7fcd4", hovering_color="White")
+            QUIT_BUTTON = Button(image=BUTTON_BG, pos=(WIDTH / 2, 600), 
+                                text_input="QUIT", font=self.getFont(50), base_color="#d7fcd4", hovering_color="White")
+            for button in [PLAY_BUTTON, INSTRUCTION_BUTTON, QUIT_BUTTON]:
+                button.changeColor(mousePos)
+                button.update(SCREEN)
+        
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if PLAY_BUTTON.checkForInput(mousePos):
+                        self.run()
+                    if INSTRUCTION_BUTTON.checkForInput(mousePos):
+                        self.instruction()
+                    if QUIT_BUTTON.checkForInput(mousePos):
+                        pygame.quit()
+                        sys.exit()
+            pygame.display.update()
     def draw_bg(self):
         SCREEN.blit(BACKGROUND,(0,0))
-    def drawText():
-        pass
     def run(self):
         players_sprites = pygame.sprite.Group()
         players_sprites.add(player1)
@@ -68,10 +174,6 @@ class Game:
             bullet_sprites.update()
             players_sprites.draw(SCREEN)
             bullet_sprites.draw(SCREEN)
-            #update đạn
-            #update thước bắn
-            # clockwise1.update(clock.tick(FPS)/1000)
-            # clockwise2.update(clock.tick(FPS)/1000 )
 
             #update thanh HP
             healthBar1.draw(player1.hp,SCREEN,(GREEN))
@@ -84,21 +186,24 @@ class Game:
 
             # linhchan.update()
             # bullet2.update()
-            # bullet1.update()
             
+            player1.shotPower.update()
+            player2.shotPower.update()
+            player2.bullet.update()        
+
             #player1 attack
             if player1.alive :
                 if self.current_player ==1:
                     player1.dir.draw()
+                    player1.shotPower.draw(SCREEN)
                     self.action_cooldown += 1 # animation
                     if self.action_cooldown >= self.action_wait_time:
                         if self.shooting:
                             player1.attack()
-                            bullet1.update()
-                            
-                            if bullet1.rect.colliderect(player2.rect):   
+                            player1.bullet.update()
+                            if player1.bullet.rect.colliderect(player2.rect):   
                                 player1.takeDamage(player2)   
-                                bullet1.kill()                    
+                                player1.bullet.kill()                    
                             self.current_player +=1
                             self.action_cooldown =0
 
@@ -106,12 +211,13 @@ class Game:
             if player2.alive :
                 if self.current_player ==2:
                     player2.dir.draw()
+                    player1.shotPower.draw(SCREEN)
+                    player1.shotPower.update()
                     self.action_cooldown += 1
-                    if self.action_cooldown >= self.action_wait_time:
+                    if self.action_cooldown >= self.action_wait_time: 
                         if self.shooting:
                             # bullet_sprites.add(bullet2)
-                            player2.attack()
-                            bullet2.update()
+                            player2.attack()                            
                             player2.takeDamage(player1)
                             self.current_player +=1
                             self.action_cooldown =0
@@ -122,12 +228,15 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                # if event.type==pygame.K_ESCAPE:
+                #     print('Paused')
+                #     self.paused()
             keyPressed = pygame.key.get_pressed()
             if keyPressed[pygame.K_UP]:
                 if self.current_player == 1:
                     player1.dir.up()
                     # player1.dir.draw()
-                    print('Press 1')
+                    print('Press 1') 
                 else :
                     player2.dir.up()
                     # player2.dir.draw()
@@ -142,24 +251,32 @@ class Game:
                     # player2.dir.draw()
             if keyPressed[pygame.K_SPACE] and not self.pressed:
                 print('Press space')
+
                 self.shooting = True
-                # self.status = True
+                # if not self.pressed:
                 if self.current_player == 1:
-                    # linhchan.shot()
+                    player1.shotPower.paused(SCREEN)
                     self.pressed = True 
-                    bullet1.shot()
-                    # bullet1.update()
+                    self.pressed = True
+                    player1.bullet.speed = player1.shotPower.currentPower
+                    player1.bullet.angle = player1.dir.curPos *2
+                    player1.bullet.shot()
+
                 elif self.current_player == 2:
+                    player2.shotPower.paused(SCREEN)
                     self.pressed = True 
-                    bullet2.shot()
-                    # bullet2.update()
-        
+                    # self.pressed = True
+                    player2.bullet.speed = player2.shotPower.currentPower
+                    player2.bullet.angle = player2.dir.curPos *2
+                    player2.bullet.shot()
             else:
                 self.shooting = False
+            if keyPressed[pygame.K_ESCAPE]:
+                self.paused()
             pygame.display.flip()
         pygame.quit()
 
 
 
 Game = Game()
-Game.run()
+Game.mainMenu()
