@@ -9,8 +9,6 @@ from pygame.constants import K_SPACE, K_UP, MOUSEBUTTONDOWN, MOUSEBUTTONUP, K_c
 from pygame.sprite import spritecollide
 from Bullet import Bullet
 from Healthbar import HealthBar
-from Settings import Settings
-from Knight import Knight
 from Player import Player
 from DirectionBar1 import DirectionBar1
 from config import *
