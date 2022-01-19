@@ -38,7 +38,7 @@ healthBar2 = HealthBar(WIDTH-500,20,player2.hp,player2.maxHp)
 class Game:
     bgX = 0
     def __init__(self):
-        self.current_player = 2
+        self.current_player = 1
         self.total_players = 2
         self.action_cooldown = 0
         self.action_wait_time = 90
@@ -208,7 +208,7 @@ class Game:
             bullet_sprites.draw(SCREEN)
 
             #update thanh HP
-            healthBar1.draw(player1.hp,SCREEN,(GREEN))
+            healthBar1.draw(player1.hp,SCREEN,(GREEN ))
             healthBar2.draw(player2.hp,SCREEN,(BLUE))
             
             #đặt các giá trị khi chưa bắn
@@ -226,15 +226,17 @@ class Game:
                 if self.shooting:
                     player1.attack()
                     if player1.bullet.rect.colliderect(player2.rect):
+                        print('Check')
                         player2.hurt()
                         player1.takeDamage(player2)   
-                        player1.bullet.rect.x = 100
-                        player1.bullet.rect.y = 600
+                        player1.bullet.rect.x = player1.rect.center[0]
+                        player1.bullet.rect.y = player1.rect.center[1]
                         self.shooting = player1.bullet.shoot
                     # if player1.bullet.check_collision_border():
                     #     # self.current_player += 1
                     self.shooting = player1.bullet.shoot
-                        
+                    print(self.shooting)
+                    
             elif self.current_player == 2:
                 player2.dir.draw()
                 player2.shotPower.draw(SCREEN)
@@ -244,33 +246,17 @@ class Game:
                     if player2.bullet.rect.colliderect(player2.rect):
                         player1.hurt()
                         player2.takeDamage(player1)   
-                        player2.bullet.rect.x = 100
-                        player2.bullet.rect.y = 600
+                        player2.bullet.rect.x = player2.rect.center[0]
+                        player2.bullet.rect.y = player2.rect.center[1]
                         # self.current_player -= 1
                         self.shooting = player2.bullet.shoot
                     # if player2.bullet.check_collision_border():
                     #     # self.current_player -= 1
+                    
                     self.shooting = player2.bullet.shoot
-            #player2 attack
-            # if player2.alive :
-            #     if self.current_player ==2:
-            #         player2.dir.draw()
-            #         player1.shotPower.draw(SCREEN)
-            #         player1.shotPower.update()
-            #         self.action_cooldown += 1
-            #         if self.action_cooldown >= self.action_wait_time: 
-            #             if self.shooting:
-            #                 # bullet_sprites.add(bullet2)
-            #                 # player2.shotPower.update()
-
-            #                 player2.attack()                            
-            #                 player2.takeDamage(player1)
-            #                 self.current_player +=1
-            #                 self.action_cooldown =0
-            # if self.current_player > self.total_players :
-            #     self.current_player =1
+                    print(self.shooting)
             
-            
+            print(self.current_player)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
@@ -291,7 +277,7 @@ class Game:
                     print('Press 2')
                 else :
                     player2.dir.down()
-                    # player2.dir.draw()
+                    # player2.dir.draw()jjalksdjlaksjd
             if keyPressed[pygame.K_SPACE] and not self.pressed:
                 print('Press space')
 
@@ -310,7 +296,7 @@ class Game:
                         player2.bullet.speed = player2.shotPower.currentPower
                         player2.bullet.angle = player2.dir.curPos *2
                         player2.bullet.shot()
-            else:
+            elif not  keyPressed[pygame.K_SPACE] :
                 self.shooting = False
             if keyPressed[pygame.K_ESCAPE]:
                 self.paused()

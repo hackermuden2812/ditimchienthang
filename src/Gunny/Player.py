@@ -63,7 +63,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.bullet = Bullet(f'src/Gunny/assets/{self.name}/bullet.png',SCREEN,self.rect.topleft[0]-50,self.rect.topleft[1],5,15,side)
+        self.bullet = Bullet(f'src/Gunny/assets/{self.name}/bullet.png',SCREEN,self.rect.center[0],self.rect.center[1],5,15,side)
         if side == -1:
             self.dir=DirectionBar2(self.rect.topleft[0]+ 50,self.rect.topleft[1])
             self.shotPower = ShotPower(self.rect.bottomleft[0],self.rect.bottomleft[1]+30)
